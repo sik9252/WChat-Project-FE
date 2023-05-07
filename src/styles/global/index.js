@@ -16,7 +16,13 @@ const GlobalStyle = createGlobalStyle`
         font-weight: 500;
         background-color: white; 
         ::-webkit-scrollbar{ display:none; }
-        width: 100vw;
+        margin: auto;
+       
+
+        // 데스크탑
+        @media screen and (min-width: 1024px) {
+          width: 400px;
+        }
 
         // 태블릿 large
         @media screen and (max-width: 1024px) {
