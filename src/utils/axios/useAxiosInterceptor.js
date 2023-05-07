@@ -1,24 +1,29 @@
 import { useEffect } from 'react';
 import axios from 'axios';
 import { useAxios } from './useAxios';
+import { isLoginAtom } from '../store/AuthStore';
+import { useSetRecoilState } from 'recoil';
 import jwt_decode from 'jwt-decode';
 
 export const useAxiosInterceptor = () => {
+  const setIsLogin = useSetRecoilState(isLoginAtom);
+
   const requestInterceptor = useAxios.interceptors.request.use(
     async function (config) {
       const accessToken = localStorage.getItem('accessToken');
       const refreshToken = localStorage.getItem('refreshToken');
 
-      if (accessToken === undefined || refreshToken === undefined) {
+      if (!accessToken || !refreshToken) {
         return config;
       }
+
       try {
         const nowDate = new Date().getTime() / 1000;
         const accessTokenDecode = jwt_decode(accessToken);
 
         if (accessTokenDecode.exp < nowDate) {
           const refreshRequest = await axios.post(
-            `${process.env.REACT_APP_AXIOS}/auth/refresh`,
+            `${process.env.REACT_APP_SERVER_IP}/auth/refresh`,
             {
               refreshToken: refreshToken,
             },
@@ -28,16 +33,20 @@ export const useAxiosInterceptor = () => {
               'accessToken',
               refreshRequest.data.accessToken,
             );
-            config.headers.Authorization = localStorage.getItem('accessToken');
+            config.headers.Authorization = `Bearer ${localStorage.getItem(
+              'accessToken',
+            )}`;
           }
         } else {
-          config.headers.Authorization = localStorage.getItem('accessToken');
+          config.headers.Authorization = `Bearer ${localStorage.getItem(
+            'accessToken',
+          )}`;
         }
       } catch (error) {
         window.location.href = '/';
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
-        // setIsLogin(false);
+        setIsLogin(false);
       }
       return config;
     },
@@ -54,10 +63,10 @@ export const useAxiosInterceptor = () => {
     },
     function (error) {
       if (error.response.status === 401) {
-        window.location.href = '/login';
+        window.location.href = '/';
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
-        // setIsLogin(false);
+        setIsLogin(false);
       }
       // eslint-disable-next-line no-undef
       return error.response;
