@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 /** styles */
 import { RoomsPageContainer, RoomsListBox } from './style';
@@ -56,6 +56,7 @@ function RoomsPage() {
       .then((res) => {
         console.log(res);
         getAllRoomsRefetch();
+        navigate(`/chat/${res.data.roomId}`);
       })
       .catch((error) => {
         console.log(error);
@@ -92,6 +93,7 @@ function RoomsPage() {
         로그아웃
       </button>
       <div>내 닉네임:{myNickName}</div>
+      <Link to="/changeNick">닉네임 변경하기</Link>
       <input
         placeholder="채팅방 이름을 입력하세요."
         onChange={onChangeRoomName}
