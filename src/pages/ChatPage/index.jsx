@@ -1,13 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import * as StompJs from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 
 /** store */
 import { useRecoilValue } from 'recoil';
+import { isLoginAtom } from '../../utils/store/AuthStore';
 import { myInfoAtom } from '../../utils/store/MyInfoStore';
 
 function ChatPage() {
+  const isLogin = useRecoilValue(isLoginAtom);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isLogin) {
+      alert('로그인을 해주세요!');
+      navigate('/');
+    }
+  }, []);
+
   const roomId = useParams();
   const myNickName = useRecoilValue(myInfoAtom);
 
@@ -20,9 +30,11 @@ function ChatPage() {
   };
 
   useEffect(() => {
-    connect();
-    return () => disconnect();
-  }, []);
+    if (isLogin) {
+      connect();
+      return () => disconnect();
+    }
+  }, [isLogin]);
 
   const connect = () => {
     client.current = new StompJs.Client({
@@ -95,7 +107,6 @@ function ChatPage() {
       body: JSON.stringify({
         type: 'TALK',
         roomId: roomId.roomId,
-        //sender: user.name,
         sender: myNickName,
         message: message,
       }),

@@ -1,13 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 /** axios */
 import { changeMyNickReq } from '../../utils/axios/MyInfoApi';
 
 /** store */
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { myInfoAtom } from '../../utils/store/MyInfoStore';
+import { useNavigate } from 'react-router-dom';
+import { isLoginAtom } from '../../utils/store/AuthStore';
 
 function ChangeNickPage() {
+  const isLogin = useRecoilValue(isLoginAtom);
+  useEffect(() => {
+    if (!isLogin) {
+      alert('로그인을 해주세요!');
+      navigate('/');
+    }
+  }, []);
+
+  const navigate = useNavigate();
   const [nickName, setNickName] = useState('');
   const setRecoilNickName = useSetRecoilState(myInfoAtom);
 
@@ -24,6 +35,7 @@ function ChangeNickPage() {
       .then((res) => {
         alert('닉네임 변경이 완료되었습니다.');
         setRecoilNickName(nickName);
+        navigate('/rooms');
       })
       .catch((err) => {
         alert('닉네임 변경에 실패하셨습니다.');

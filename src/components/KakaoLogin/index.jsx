@@ -18,6 +18,13 @@ function KakaoLogin() {
   const setMyInfo = useSetRecoilState(myInfoAtom);
 
   useEffect(() => {
+    if (isLogin) {
+      alert('이미 로그인된 상태입니다');
+      navigate('/rooms');
+    }
+  }, []);
+
+  useEffect(() => {
     // 서버로 카카오 인가코드 보내고 응답받고 토큰 저장 및 이후 처리(내정보 저장 등) 로직 작성
     kakaoLoginReq(authCode)
       .then((res) => {

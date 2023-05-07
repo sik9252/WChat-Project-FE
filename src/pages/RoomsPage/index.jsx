@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 /** styles */
@@ -16,6 +16,13 @@ import { isLoginAtom } from '../../utils/store/AuthStore';
 
 function RoomsPage() {
   const navigate = useNavigate();
+  const isLogin = useRecoilValue(isLoginAtom);
+  useEffect(() => {
+    if (!isLogin) {
+      alert('로그인을 해주세요!');
+      navigate('/');
+    }
+  }, []);
 
   // 로그인 전역 상태
   const setIsLogin = useSetRecoilState(isLoginAtom);
