@@ -1,5 +1,8 @@
 import React from 'react';
 
+/** assets */
+import KakaoLoginBtn from '../../assets/kakao_login_btn.png';
+
 /** styles */
 import { LoginPageContainer } from './style';
 
@@ -14,8 +17,7 @@ function LoginPage() {
   return (
     <LoginPageContainer>
       <div onClick={handleKakaoLogin}>
-        {/* <img src={KakaoLoginBtn} /> */}
-        <p>카카오 로그인</p>
+        <img src={KakaoLoginBtn} alt="카카오 로그인" />
       </div>
     </LoginPageContainer>
   );
