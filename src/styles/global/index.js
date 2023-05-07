@@ -20,27 +20,27 @@ const GlobalStyle = createGlobalStyle`
 
         // 태블릿 large
         @media screen and (max-width: 1024px) {
-            background: white;
+            
         }
  
         // 태블릿 small
         @media screen and (max-width: 720px) {
-            background: yellow;
+            
         }
 
         // 모바일 large
         @media screen and (max-width: 600px) {
-            background: orange;
+            
         }
 
         // 모바일 medium
         @media screen and (max-width: 400px) {
-            background: blue;
+            
         }
 
         // 모바일 small
         @media screen and (max-width: 320px) {
-            background: pink;
+            
         }
     }
     *{
