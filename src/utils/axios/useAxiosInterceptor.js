@@ -62,7 +62,7 @@ export const useAxiosInterceptor = () => {
       return response;
     },
     function (error) {
-      if (error.response.status === 401) {
+      if (error) {
         window.location.href = '/';
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
