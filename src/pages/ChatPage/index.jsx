@@ -3,12 +3,16 @@ import { useParams } from 'react-router-dom';
 import * as StompJs from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 
+/** store */
+import { useRecoilValue } from 'recoil';
+import { myInfoAtom } from '../../utils/store/MyInfoStore';
+
 function ChatPage() {
   const roomId = useParams();
+  const myNickName = useRecoilValue(myInfoAtom);
 
   const client = useRef({});
   const [chatMessages, setChatMessages] = useState([]);
-  //const [message, setMessage] = useState('');
   const [inputMessage, setInputMessage] = useState('');
 
   const onChangeInputMessage = (e) => {
@@ -52,7 +56,7 @@ function ChatPage() {
       body: JSON.stringify({
         type: 'EXIT',
         roomId: roomId.roomId,
-        sender: '나간 사람',
+        sender: myNickName,
       }),
     });
   };
@@ -75,7 +79,7 @@ function ChatPage() {
         body: JSON.stringify({
           type: 'ENTER',
           roomId: roomId.roomId,
-          sender: '들어온 사람',
+          sender: myNickName,
         }),
       });
     }
@@ -92,7 +96,7 @@ function ChatPage() {
         type: 'TALK',
         roomId: roomId.roomId,
         //sender: user.name,
-        sender: '유저 이름',
+        sender: myNickName,
         message: message,
       }),
     });
@@ -104,9 +108,21 @@ function ChatPage() {
     <div>
       {chatMessages && chatMessages.length > 0 && (
         <ul>
-          {chatMessages.map((_chatMessage, index) => (
-            <li key={index}>{_chatMessage.message}</li>
-          ))}
+          {chatMessages.map((_chatMessage, index) => {
+            const currentMessage = JSON.stringify(_chatMessage);
+            if (
+              currentMessage.includes(`${myNickName}님이 입장하였습니다.`) ||
+              currentMessage.includes(`${myNickName}님이 퇴장하였습니다.`)
+            ) {
+              return <li key={index}>{_chatMessage.message}</li>;
+            } else {
+              return (
+                <li key={index}>
+                  {myNickName}님: {_chatMessage.message}
+                </li>
+              );
+            }
+          })}
         </ul>
       )}
       <div>
