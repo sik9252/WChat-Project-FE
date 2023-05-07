@@ -1,8 +1,8 @@
-import { useAxios } from '../axios/useAxios';
+import { useAxios } from '../useAxios';
 
 /** 채팅 방 생성하기 */
 export const createRoomsReq = async (data) => {
-  return await useAxios.post(`/chat/room`, data);
+  return await useAxios.post(`/chat/create`, data);
 };
 
 /** 채팅 방 전체 조회 */
