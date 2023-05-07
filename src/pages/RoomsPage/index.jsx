@@ -6,10 +6,22 @@ import { RoomsPageContainer, RoomsListBox } from './style';
 
 /** axios */
 import { useQuery } from 'react-query';
-import { createRoomsReq, getAllRoomsReq } from '../../utils/RoomsApi';
+import { createRoomsReq, getAllRoomsReq } from '../../utils/axios/RoomsApi';
+import { logoutReq } from '../../utils/axios/AuthApi';
+
+/** store */
+import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { myInfoAtom } from '../../utils/store/MyInfoStore';
+import { isLoginAtom } from '../../utils/store/AuthStore';
 
 function RoomsPage() {
   const navigate = useNavigate();
+
+  // 로그인 전역 상태
+  const setIsLogin = useSetRecoilState(isLoginAtom);
+
+  // 내 정보 전역 상태
+  const myNickName = useRecoilValue(myInfoAtom);
 
   // 전체 채팅방 목록 조회
   const [roomsList, setRoomsList] = useState([]);
@@ -55,8 +67,31 @@ function RoomsPage() {
     navigate(`/chat/${roomId}`);
   };
 
+  // 로그아웃
+  const onClickLogout = () => {
+    logoutReq()
+      .then((res) => {
+        alert('로그아웃 하셨습니다.');
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        setIsLogin(false);
+        navigate('/');
+      })
+      .catch((err) => {
+        alert('로그아웃에 실패했습니다.');
+      });
+  };
+
   return (
     <RoomsPageContainer>
+      <button
+        onClick={() => {
+          onClickLogout();
+        }}
+      >
+        로그아웃
+      </button>
+      <div>내 닉네임:{myNickName}</div>
       <input
         placeholder="채팅방 이름을 입력하세요."
         onChange={onChangeRoomName}
