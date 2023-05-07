@@ -3,6 +3,8 @@ import { ThemeProvider } from 'styled-components';
 import GlobalStyle from './styles/global';
 import theme from './styles/common/theme';
 
+import Router from './router';
+
 function App() {
   // 모바일 뷰에서 100vh 제대로 적용되도록 하는 함수
   function setScreenSize() {
@@ -16,7 +18,7 @@ function App() {
   return (
     <ThemeProvider theme={theme['main']}>
       <GlobalStyle />
-      <div>메인페이지</div>
+      <Router/>
     </ThemeProvider>
   );
 }
