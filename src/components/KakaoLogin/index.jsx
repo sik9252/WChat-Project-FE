@@ -28,31 +28,25 @@ function KakaoLogin() {
     // 서버로 카카오 인가코드 보내고 응답받고 토큰 저장 및 이후 처리(내정보 저장 등) 로직 작성
     kakaoLoginReq(authCode)
       .then((res) => {
-        console.log('loginRes:', res);
         setIsLogin(true);
         localStorage.setItem('accessToken', res.data.accessToken);
         localStorage.setItem('refreshToken', res.data.refreshToken);
+
+        getMyInfoReq()
+          .then((res) => {
+            setMyInfo(res.data.nickName);
+            navigate('/rooms');
+          })
+          .catch((err) => {
+            alert('유저 정보를 가져오는데 실패하였습니다.');
+          });
       })
       .catch((err) => {
-        alert('로그인에 실패하였습니다!');
+        alert('로그인에 실패하였습니다! 다시 시도해주세요.');
         navigate('/');
         console.log(err);
       });
   }, [authCode]);
-
-  useEffect(() => {
-    if (isLogin) {
-      getMyInfoReq()
-        .then((res) => {
-          console.log('myinfoRes:', res.data);
-          setMyInfo(res.data.nickName);
-          navigate('/rooms');
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [isLogin]);
 }
 
 export default KakaoLogin;
