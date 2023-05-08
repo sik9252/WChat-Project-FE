@@ -6,7 +6,7 @@ export const InputBox = ({
   width,
   height,
   placeholder,
-  onChangeFunc,
+  onChange,
   defaultValue,
 }) => {
   return (
@@ -16,7 +16,7 @@ export const InputBox = ({
       height={height}
       placeholder={placeholder}
       defaultValue={defaultValue}
-      onChange={onChangeFunc}
+      onChange={onChange}
     />
   );
 };
@@ -26,8 +26,8 @@ export const SearchInputBox = ({
   width,
   height,
   placeholder,
-  onChangeFunc,
-  onKeyPressFunc,
+  onChange,
+  onKeyPress,
 }) => {
   return (
     <StyledSearchInputBox
@@ -35,8 +35,8 @@ export const SearchInputBox = ({
       width={width}
       height={height}
       placeholder={placeholder}
-      onChange={onChangeFunc}
-      onKeyPress={onKeyPressFunc}
+      onChange={onChange}
+      onKeyPress={onKeyPress}
     />
   );
 };

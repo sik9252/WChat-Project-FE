@@ -1,14 +1,12 @@
 import React from 'react';
-import {
-  StyledButton,
-} from './style';
+import { StyledButton } from './style';
 
 export const Button = ({
   children,
   name,
   width,
   height,
-  onClickFunc,
+  onClick,
   bgColor,
   fontSize,
 }) => {
@@ -17,7 +15,7 @@ export const Button = ({
       name={name}
       width={width}
       height={height}
-      onClick={onClickFunc}
+      onClick={onClick}
       bgColor={bgColor}
       fontSize={fontSize}
     >
