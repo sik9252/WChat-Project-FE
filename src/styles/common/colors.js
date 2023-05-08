@@ -12,17 +12,6 @@ const COLOR = {
   GRAY_9: '#E5E5E5',
   GRAY_10: '#D9D9D9',
 
-  // 푸른색 계열
-  BLUE_0: '#8EC5FC',
-  BLUE_1: '#9DB3D2',
-  BLUE_2: '#6667AA',
-  BLUE_3: '#2D4878',
-  BLUE_4: '#19325F',
-  BLUE_5: '#F4F7FF',
-  BLUE_6: '#25D4D8',
-  BLUE_7: '#B3B7CB',
-  BLUE_8: '#5C6072',
-
   // 검은색 계열
   BLACK_0: '#1A1311',
   BLACK_1: '#000000',
@@ -32,23 +21,23 @@ const COLOR = {
   YELLOW_0: '#FECA2F',
   YELLOW_1: '#EBBA92',
 
-  //보라색 계열
-  PURPLE_0: '#E0C3FC',
-
-  //초록색 계열
-  GREEN_0: '#8DA2A2',
-  GREEN_1: '#3A5860',
-
   // 붉은색 계열
   RED_0: '#FEC5C4',
   RED_1: '#AB6277',
 
-  // 카드에 쓰이는 색상
-  CARD_SKYBLUE: '#D6DAE7',
-  CARD_PINK: '#E5B9C6',
-  CARD_BLUE: '#AFB0EB',
-  CARD_GRAY: '#C7C5CB',
-  CARD_ORANGE: '#EDBE87',
+  // 핵심 색상
+  GREEN_0: '#FEFBE9',
+  GREEN_1: '#F6FFDE',
+  GREEN_2: '#EAE7B1',
+  GREEN_3: '#E3F2C1',
+  GREEN_4: '#C9DBB2',
+  GREEN_5: '#AAC8A7',
+  GREEN_6: '#A6BB8D',
+  GREEN_7: '#9DC088',
+  GREEN_8: '#609966',
+  GREEN_9: '#61876E',
+  GREEN_10: '#3C6255',
+  GREEN_11: '#40513B',
 };
 
 export default COLOR;

@@ -7,7 +7,8 @@ const mainTheme = {
     mainContainer: css`
       width: 100%;
       height: calc(var(--vh, 1vh) * 100);
-      background: #fff8d6;
+      background: #fefbe9;
+      padding: 20px;
 
       // 데스크탑
       @media screen and (min-width: 1024px) {
