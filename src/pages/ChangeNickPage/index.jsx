@@ -33,12 +33,17 @@ function ChangeNickPage() {
 
     changeMyNickReq(nickData)
       .then((res) => {
-        alert('닉네임 변경이 완료되었습니다.');
-        setRecoilNickName(nickName);
-        navigate('/rooms');
+        if (res.data.success) {
+          alert('닉네임 변경이 완료되었습니다.');
+          setRecoilNickName(nickName);
+          navigate('/rooms');
+        } else {
+          alert('3분 후에 다시 변경하실 수 있습니다.');
+          navigate('/rooms');
+        }
       })
       .catch((err) => {
-        alert('닉네임 변경에 실패하셨습니다.');
+        alert(err.response.data.message);
       });
   };
 
