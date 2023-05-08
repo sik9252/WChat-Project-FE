@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import CommonLayout from '../components/CommonLayout';
 import LoginPage from '../pages/LoginPage';
 import RoomsPage from '../pages/RoomsPage';
+import CreateRoomPage from '../pages/CreateRoomPage';
 import ChatPage from '../pages/ChatPage';
 import MyPage from '../pages/MyPage';
 import KakaoLogin from '../components//KakaoLogin';
@@ -18,6 +19,7 @@ const Router = () => {
         <Route element={<CommonLayout />}>
           <Route path="*" element={<PageNotFound />} />
           <Route path="/rooms" element={<RoomsPage />} />
+          <Route path="/createRoom" element={<CreateRoomPage />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/chat/:roomId" element={<ChatPage />} />
           <Route path="/myPage" element={<MyPage />} />
