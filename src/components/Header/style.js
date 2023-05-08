@@ -25,8 +25,7 @@ export const InfoBox = styled.div`
 
   & > div {
     :nth-child(1) {
-      padding-right: 10px;
-      color: ${COLOR.BLACK_2};
+      margin-right: 3px;
     }
   }
 `;
