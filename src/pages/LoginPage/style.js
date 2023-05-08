@@ -13,3 +13,12 @@ export const LoginPageContainer = styled.div`
     cursor: pointer;
   }
 `;
+
+export const LogoBox = styled.div`
+  width: 70%;
+  margin-bottom: 80px;
+
+  & > img {
+    width: 100%;
+  }
+`;

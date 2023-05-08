@@ -2,9 +2,10 @@ import React, { useEffect } from 'react';
 
 /** assets */
 import KakaoLoginBtn from '../../assets/kakao_login_btn.png';
+import WchatLogo from '../../assets/wchatLogo.png';
 
 /** styles */
-import { LoginPageContainer } from './style';
+import { LoginPageContainer, LogoBox } from './style';
 
 /** store */
 import { useRecoilValue } from 'recoil';
@@ -31,6 +32,9 @@ function LoginPage() {
 
   return (
     <LoginPageContainer>
+      <LogoBox>
+        <img src={WchatLogo} alt="로고" />
+      </LogoBox>
       <div onClick={handleKakaoLogin}>
         <img src={KakaoLoginBtn} alt="카카오 로그인" />
       </div>
