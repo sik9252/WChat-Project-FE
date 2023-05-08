@@ -3,6 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import * as StompJs from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 
+/** style */
+import { ChatPageContainer } from './style';
+
 /** store */
 import { useRecoilValue } from 'recoil';
 import { isLoginAtom } from '../../utils/store/AuthStore';
@@ -116,7 +119,7 @@ function ChatPage() {
   };
 
   return (
-    <div>
+    <ChatPageContainer>
       {chatMessages && chatMessages.length > 0 && (
         <ul>
           {chatMessages.map((_chatMessage, index) => {
@@ -146,7 +149,7 @@ function ChatPage() {
         />
         <button onClick={() => publish(inputMessage)}>보내기</button>
       </div>
-    </div>
+    </ChatPageContainer>
   );
 }
 
