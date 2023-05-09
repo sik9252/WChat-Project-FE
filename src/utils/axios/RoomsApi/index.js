@@ -5,9 +5,9 @@ export const createRoomsReq = async (data) => {
   return await useAxios.post(`/chat/create`, data);
 };
 
-/** 채팅 방 전체 조회 */
-export const getAllRoomsReq = async (roomName) => {
-  return await useAxios.get(`/chat/rooms`, roomName);
+/** 채팅 방 조회(페이징) */
+export const getAllRoomsReq = async (page) => {
+  return await useAxios.get(`/chat/rooms/p/${page}`);
 };
 
 /** 특정 채팅 방 조회 */
