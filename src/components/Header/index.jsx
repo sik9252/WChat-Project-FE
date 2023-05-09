@@ -47,10 +47,15 @@ function Header() {
     navigate('/mypage');
   };
 
+  // 로고 클릭시 메인페이지로 이동
+  const onClickLogo = () => {
+    navigate('/rooms');
+  };
+
   return (
     <HeaderContainer>
       <LogoBox>
-        <img src={WchatLogo} alt="WChat" />
+        <img src={WchatLogo} alt="WChat" onClick={() => onClickLogo()} />
       </LogoBox>
       <InfoBox>
         {location.pathname === '/rooms' ? (

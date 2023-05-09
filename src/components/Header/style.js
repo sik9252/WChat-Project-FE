@@ -16,6 +16,7 @@ export const HeaderContainer = styled.div`
 export const LogoBox = styled.div`
   & > img {
     width: 100px;
+    cursor: pointer;
   }
 `;
 
