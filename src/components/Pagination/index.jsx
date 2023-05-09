@@ -21,20 +21,30 @@ function Pagination({ totalPageCount, currentPage, setCurrentPage }) {
 
   return (
     <PaginationContainer>
-      {currentPage === 1 ? (
-        <div></div>
+      {totalPageCount === 0 ? (
+        <>
+          <Button></Button>
+          <div>{currentPage}</div>
+          <Button></Button>
+        </>
       ) : (
-        <Button width={60} height={40} onClick={() => onClickPrevBtn()}>
-          이전
-        </Button>
-      )}
-      <div>{currentPage}</div>
-      {totalPageCount === currentPage ? (
-        <div></div>
-      ) : (
-        <Button width={60} height={40} onClick={() => onClickNextBtn()}>
-          다음
-        </Button>
+        <>
+          {currentPage === 1 ? (
+            <Button></Button>
+          ) : (
+            <Button width={60} height={40} onClick={() => onClickPrevBtn()}>
+              이전
+            </Button>
+          )}
+          <div>{currentPage}</div>
+          {totalPageCount === currentPage ? (
+            <Button></Button>
+          ) : (
+            <Button width={60} height={40} onClick={() => onClickNextBtn()}>
+              다음
+            </Button>
+          )}
+        </>
       )}
     </PaginationContainer>
   );
