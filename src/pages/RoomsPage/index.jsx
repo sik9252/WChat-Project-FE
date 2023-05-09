@@ -1,21 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 /** styles */
-import { RoomsPageContainer, RoomsListBox } from './style';
+import {
+  RoomsPageContainer,
+  WelcomeTitle,
+  RoomsListBox,
+  Room,
+  SearchBox,
+  RoomListTitleBox,
+} from './style';
+
+/** components*/
+import { SearchInputBox } from '../../components/InputBox';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faRotateRight } from '@fortawesome/free-solid-svg-icons';
+import { faLock } from '@fortawesome/free-solid-svg-icons';
+import { faLockOpen } from '@fortawesome/free-solid-svg-icons';
+import { Button } from '../../components/Button';
+import Pagination from '../../components/Pagination';
 
 /** axios */
-import { useQuery } from 'react-query';
-import { createRoomsReq, getAllRoomsReq } from '../../utils/axios/RoomsApi';
-import { logoutReq } from '../../utils/axios/AuthApi';
+import {
+  getAllRoomsReq,
+  checkRoomPasswordRef,
+} from '../../utils/axios/RoomsApi';
 
 /** store */
-import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { myInfoAtom } from '../../utils/store/MyInfoStore';
 import { isLoginAtom } from '../../utils/store/AuthStore';
 
 function RoomsPage() {
   const navigate = useNavigate();
+
+  /** 로그인 여부 판단 */
   const isLogin = useRecoilValue(isLoginAtom);
   useEffect(() => {
     if (!isLogin) {
@@ -24,105 +44,145 @@ function RoomsPage() {
     }
   }, []);
 
-  // 로그인 전역 상태
-  const setIsLogin = useSetRecoilState(isLoginAtom);
-
-  // 내 정보 전역 상태
+  // 내 닉네임 조회
   const myNickName = useRecoilValue(myInfoAtom);
 
-  // 전체 채팅방 목록 조회
+  /** 채팅방 목록 조회(페이징) */
+  const [currentPage, setCurrentPage] = useState(0);
   const [roomsList, setRoomsList] = useState([]);
-  const { refetch: getAllRoomsRefetch } = useQuery(
-    'getAllRoomsReq',
-    getAllRoomsReq,
-    {
-      retry: 0,
-      onSuccess: (data) => {
-        console.log(data.data);
-        setRoomsList(data.data);
-      },
-      onError: (error) => {
-        console.log(error);
-      },
-    },
-  );
 
-  // 채팅방 생성하기
-  const [roomName, setRoomName] = useState('');
-
-  const onChangeRoomName = (e) => {
-    setRoomName(e.target.value);
-  };
-
-  const onClickCreateRoom = () => {
-    const roomData = {
-      name: roomName,
-    };
-
-    createRoomsReq(roomData)
+  useEffect(() => {
+    getAllRoomsReq(currentPage)
       .then((res) => {
-        console.log(res);
-        getAllRoomsRefetch();
-        navigate(`/chat/${res.data.roomId}`);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  // 채팅방 입장
-  const onClickEnterRoom = (roomId) => {
-    navigate(`/chat/${roomId}`);
-  };
-
-  // 로그아웃
-  const onClickLogout = () => {
-    logoutReq()
-      .then((res) => {
-        alert('로그아웃 하셨습니다.');
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        setIsLogin(false);
-        navigate('/');
+        console.log(res.data);
+        setRoomsList(res.data);
       })
       .catch((err) => {
-        alert('로그아웃에 실패했습니다.');
+        alert('채팅방 목록을 불러오는데 실패하였습니다.');
       });
+  }, [navigate, currentPage]);
+
+  /** 새로고침 버튼 클릭 시 데이터 패칭 */
+  const onClickRefresh = () => {
+    getAllRoomsReq(currentPage)
+      .then((res) => {
+        console.log(res.data);
+        setRoomsList(res.data);
+      })
+      .catch((err) => {
+        alert('채팅방 목록을 불러오는데 실패하였습니다.');
+      });
+  };
+
+  // 채팅방 생성하러 가기
+  const onClickCreateRoom = () => {
+    navigate('/createRoom');
+  };
+
+  /** 채팅방 입장 및 비밀번호 확인 */
+  const onClickEnterRoom = (room, roomId) => {
+    if (room.secret) {
+      const roomPassword = prompt('비밀번호를 입력해주세요!');
+      const roomData = {
+        roomId: roomId,
+        roomPassword: roomPassword,
+      };
+      checkRoomPasswordRef(roomData).then((res) => {
+        if (res.data.success) {
+          navigate(`/chat/${roomId}`);
+        } else {
+          alert(res.data.message);
+        }
+      });
+    } else {
+      const roomData = {
+        roomId: roomId,
+      };
+      checkRoomPasswordRef(roomData).then((res) => {
+        console.log(res);
+        if (res.data.success) {
+          navigate(`/chat/${roomId}`);
+        } else {
+          alert(res.data.message);
+        }
+      });
+    }
   };
 
   return (
     <RoomsPageContainer>
-      <button
-        onClick={() => {
-          onClickLogout();
-        }}
-      >
-        로그아웃
-      </button>
-      <div>내 닉네임:{myNickName}</div>
-      <input
-        placeholder="채팅방 이름을 입력하세요."
-        onChange={onChangeRoomName}
-      ></input>
-      <button onClick={onClickCreateRoom}>생성하기</button>
+      <WelcomeTitle>
+        <p>{myNickName}</p>님, 환영합니다!
+      </WelcomeTitle>
+      {/* 채팅방 검색창 */}
+      <SearchBox>
+        <SearchInputBox
+          width={320}
+          height={40}
+          placeholder={'찾으시는 방이 있으신가요?'}
+          // onChangeFunc={keywordCheck}
+          // onKeyPressFunc={SearchByEnter}
+        />
+        <FontAwesomeIcon icon={faMagnifyingGlass} />
+      </SearchBox>
+      <RoomListTitleBox>
+        <div>채팅방 목록</div>
+        <div>
+          <Button
+            width={100}
+            height={40}
+            onClick={() => {
+              onClickCreateRoom();
+            }}
+          >
+            채팅방 만들기
+          </Button>
+          <FontAwesomeIcon
+            icon={faRotateRight}
+            onClick={() => onClickRefresh()}
+          />
+        </div>
+      </RoomListTitleBox>
       <RoomsListBox>
-        {roomsList && roomsList.length > 0 ? (
+        {roomsList.chatRoomResponseDtoList &&
+        roomsList.chatRoomResponseDtoList.length > 0 ? (
           <>
-            {roomsList.map((room) => (
-              <div
+            {roomsList.chatRoomResponseDtoList.map((room) => (
+              <Room
                 key={room.roomId}
                 onClick={() => {
-                  onClickEnterRoom(room.roomId);
+                  onClickEnterRoom(room, room.roomId);
                 }}
+                isSecret={room.secret}
               >
-                {JSON.parse(room.roomName).name}
-              </div>
+                <div>{room.roomName}</div>
+                <div>
+                  {room.secret ? (
+                    <div>
+                      <FontAwesomeIcon icon={faLock} />
+                    </div>
+                  ) : (
+                    <div>
+                      <FontAwesomeIcon icon={faLockOpen} />
+                    </div>
+                  )}
+
+                  <div>
+                    {room.countPeople}/{room.maxPeople}
+                  </div>
+                </div>
+              </Room>
             ))}
           </>
         ) : (
-          <div>개설된 채팅방이 없습니다.</div>
+          <Room>개설된 채팅방이 없습니다.</Room>
         )}
       </RoomsListBox>
+      <Pagination
+        totalPageCount={roomsList.chatRoomTotalPages}
+        currentPage={currentPage + 1}
+        setCurrentPage={setCurrentPage}
+      />
     </RoomsPageContainer>
   );
 }
