@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import * as StompJs from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
+import moment from 'moment-timezone';
 
 /** style */
 import { ChatPageContainer } from './style';
@@ -39,13 +40,14 @@ function ChatPage() {
     }
   }, [isLogin]);
 
+  // 소켓 연결
   const connect = () => {
     client.current = new StompJs.Client({
       // brokerURL: "ws://localhost:8080/ws-stomp/websocket", // 웹소켓 서버로 직접 접속
       webSocketFactory: () =>
         new SockJS(`${process.env.REACT_APP_SERVER_IP}/ws/chat`), // proxy를 통한 접속
       connectHeaders: {
-        'auth-token': 'spring-chat-auth-token',
+        Authorization: `${localStorage.getItem('accessToken')}`,
       },
       debug: function (str) {
         console.log(str);
@@ -64,8 +66,8 @@ function ChatPage() {
     client.current.activate();
   };
 
+  // 소켓 연결 해제
   const disconnect = () => {
-    client.current.deactivate();
     client.current.publish({
       destination: '/app/chat/message',
       body: JSON.stringify({
@@ -74,13 +76,22 @@ function ChatPage() {
         sender: myNickName,
       }),
     });
+
+    if (client.current != null) {
+      if (client.current.connected) {
+        client.current.deactivate();
+        client.current.unsubscribe();
+      }
+    }
+    // client.current.deactivate();
   };
 
+  // 채팅방 입장(구독)
   const subscribe = () => {
     client.current.subscribe(
       `/topic/chat/room/${roomId.roomId}`,
       ({ body }) => {
-        console.log(body);
+        console.log('subscribe', body);
         setChatMessages((_chatMessages) => [
           ..._chatMessages,
           JSON.parse(body),
@@ -100,22 +111,32 @@ function ChatPage() {
     }
   };
 
+  // 메시지 전송
   const publish = (message) => {
     if (!client.current.connected) {
       return;
     }
 
-    client.current.publish({
-      destination: '/app/chat/message',
-      body: JSON.stringify({
-        type: 'TALK',
-        roomId: roomId.roomId,
-        sender: myNickName,
-        message: message,
-      }),
-    });
+    if (message !== '') {
+      client.current.publish({
+        destination: '/app/chat/message',
+        body: JSON.stringify({
+          type: 'TALK',
+          roomId: roomId.roomId,
+          sender: myNickName,
+          message: message,
+          sendAt: new Date(),
+        }),
+      });
+    }
 
     setInputMessage('');
+  };
+
+  // 채팅 보낸 시간 출력해주는 함수
+  const getCurrentTime = (time) => {
+    var m = moment(time).tz('Asia/Seoul');
+    return m.format('HH:mm');
   };
 
   return (
@@ -123,16 +144,13 @@ function ChatPage() {
       {chatMessages && chatMessages.length > 0 && (
         <ul>
           {chatMessages.map((_chatMessage, index) => {
-            const currentMessage = JSON.stringify(_chatMessage);
-            if (
-              currentMessage.includes(`${myNickName}님이 입장하였습니다.`) ||
-              currentMessage.includes(`${myNickName}님이 퇴장하였습니다.`)
-            ) {
+            if (_chatMessage.type === 'ENTER' || _chatMessage.type === 'EXIT') {
               return <li key={index}>{_chatMessage.message}</li>;
             } else {
               return (
                 <li key={index}>
                   {myNickName}님: {_chatMessage.message}
+                  {getCurrentTime(_chatMessage.sendAt)}
                 </li>
               );
             }
