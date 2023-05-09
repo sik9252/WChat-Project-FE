@@ -22,9 +22,11 @@ import { Button } from '../../components/Button';
 import Pagination from '../../components/Pagination';
 
 /** axios */
+import { useQuery } from 'react-query';
 import {
   getAllRoomsReq,
   checkRoomPasswordRef,
+  getSearchedRoomsReq,
 } from '../../utils/axios/RoomsApi';
 
 /** store */
@@ -109,6 +111,47 @@ function RoomsPage() {
     }
   };
 
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [isSearchClicked, setIsSearchClicked] = useState(false);
+  const onChangeSearchKeyword = (e) => {
+    setSearchKeyword(e.target.value);
+  };
+
+  const SearchByEnter = (e) => {
+    if (e.key === 'Enter') {
+      console.log('enter');
+      setIsSearchClicked(true);
+    }
+  };
+
+  const onClickSearch = () => {
+    console.log('click');
+    setIsSearchClicked(true);
+  };
+
+  const { refetch: getSearchedRoomsReqRefetch } = useQuery(
+    ['getSearchedRoomsReq', isSearchClicked],
+    () => getSearchedRoomsReq(searchKeyword),
+    {
+      retry: 0,
+      enabled: false,
+      onSuccess: (data) => {
+        console.log(data.data);
+        setRoomsList(data.data);
+        setIsSearchClicked(false);
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    },
+  );
+
+  useEffect(() => {
+    if (isSearchClicked) {
+      getSearchedRoomsReqRefetch();
+    }
+  }, [isSearchClicked]);
+
   return (
     <RoomsPageContainer>
       <WelcomeTitle>
@@ -120,10 +163,15 @@ function RoomsPage() {
           width={320}
           height={40}
           placeholder={'찾으시는 방이 있으신가요?'}
-          // onChangeFunc={keywordCheck}
-          // onKeyPressFunc={SearchByEnter}
+          onChange={onChangeSearchKeyword}
+          onKeyPress={SearchByEnter}
         />
-        <FontAwesomeIcon icon={faMagnifyingGlass} />
+        <FontAwesomeIcon
+          icon={faMagnifyingGlass}
+          onClick={() => {
+            onClickSearch();
+          }}
+        />
       </SearchBox>
       <RoomListTitleBox>
         <div>채팅방 목록</div>

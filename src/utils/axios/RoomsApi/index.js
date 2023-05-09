@@ -10,6 +10,11 @@ export const getAllRoomsReq = async (page) => {
   return await useAxios.get(`/chat/rooms/p/${page}`);
 };
 
+/** 채팅 방 조회(검색) */
+export const getSearchedRoomsReq = async (roomName) => {
+  return await useAxios.get(`/chat/room?roomName=${roomName}`);
+};
+
 /** 특정 채팅 방 조회 */
 export const uniqueRoomReq = async (roomId) => {
   return await useAxios.get(`/chat/room/${roomId}`);
@@ -19,3 +24,4 @@ export const uniqueRoomReq = async (roomId) => {
 export const checkRoomPasswordRef = async (data) => {
   return await useAxios.post(`/chat/room/enter`, data);
 };
+
