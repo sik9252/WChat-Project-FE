@@ -25,7 +25,8 @@ export const StyledSearchInputBox = styled.input`
   height: ${({ height }) => (height ? `${height}px` : '58px')};
   padding: 10px;
   border: none;
-  border: 1px solid ${COLOR.GREEN_9};
+  border-radius: 7px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 
   ::placeholder {
     color: ${COLOR.GREEN_6};
