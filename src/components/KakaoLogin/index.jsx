@@ -19,7 +19,6 @@ function KakaoLogin() {
 
   useEffect(() => {
     if (isLogin) {
-      alert('이미 로그인된 상태입니다');
       navigate('/rooms');
     }
   }, []);
