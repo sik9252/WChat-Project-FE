@@ -20,11 +20,14 @@ import { InputBox } from '../../components/InputBox';
 import { createRoomsReq } from '../../utils/axios/RoomsApi';
 
 /** store */
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { enteredRoomNameAtom } from '../../utils/store/RoomStore';
 import { isLoginAtom } from '../../utils/store/AuthStore';
 
 function CreateRoomPage() {
   const navigate = useNavigate();
+  // 접속한 채팅방의 제목
+  const setEnteredRoomName = useSetRecoilState(enteredRoomNameAtom);
   const isLogin = useRecoilValue(isLoginAtom);
 
   useEffect(() => {
@@ -106,7 +109,10 @@ function CreateRoomPage() {
 
       createRoomsReq(roomData)
         .then((res) => {
-          console.log(res);
+          setEnteredRoomName({
+            roomName: res.data.roomName,
+            roomId: res.data.roomId,
+          });
           navigate(`/chat/${res.data.roomId}`);
         })
         .catch((error) => {
@@ -122,27 +128,25 @@ function CreateRoomPage() {
         <RoomNameBox>
           <div>채팅방 이름</div>
           <InputBox
-            width={360}
             height={40}
             placeholder="1~20자 이내의 채팅방 이름을 입력해주세요."
             onChange={onChangeRoomName}
           ></InputBox>
         </RoomNameBox>
         <ErrorBox checkRoomName={checkRoomName}>
-          채팅방 이름은 1~20자여야 합니다.
+          * 채팅방 이름은 1~20자여야 합니다.
         </ErrorBox>
         <div>
           <MaxPeopleBox>
             <div>최대 인원수</div>
             <InputBox
-              width={200}
               height={40}
               placeholder="2~10 사이의 수를 입력해주세요."
               onChange={onChangeMaxPeople}
             ></InputBox>
           </MaxPeopleBox>
           <ErrorBox checkMaxPeople={checkMaxPeople}>
-            최대 인원수는 2~10사이의 값이여야 합니다.
+            * 최대 인원수는 2~10사이의 값이여야 합니다.
           </ErrorBox>
           <IsSecretBox>
             <div>비밀방 여부</div>
@@ -174,14 +178,13 @@ function CreateRoomPage() {
             <RoomPassWordBox>
               <div>방 비밀번호</div>
               <InputBox
-                width={360}
                 height={40}
                 placeholder="방 입장시 필요한 비밀번호를 설정해주세요."
                 onChange={onChangeRoomPassword}
               ></InputBox>
             </RoomPassWordBox>
             <ErrorBox checkRoomPassword={checkRoomPassword}>
-              비밀방 설정시 비밀번호는 필수값 입니다.
+              * 비밀방 설정시 비밀번호는 필수값 입니다.
             </ErrorBox>
           </>
         ) : (
