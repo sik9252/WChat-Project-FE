@@ -260,7 +260,7 @@ function RoomsPage() {
         {roomsList.chatRoomTotalPages === 0 ? (
           <>
             <Button></Button>
-            <div>{currentPage}</div>
+            <div>{currentPage + 1}</div>
             <Button></Button>
           </>
         ) : (
