@@ -9,3 +9,8 @@ export const kakaoLoginReq = async (code) => {
 export const logoutReq = async () => {
   return await useAxios.post(`/auth/logout`);
 };
+
+/** 회원 탈퇴 */
+export const withDrawlReq = async () => {
+  return await useAxios.delete(`/auth/withdrawal`);
+};
