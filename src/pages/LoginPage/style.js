@@ -3,7 +3,10 @@ import COLOR from '../../styles/common/colors';
 import { FONT_STYLES } from '../../styles/common/font-styles';
 
 export const LoginPageContainer = styled.div`
-  ${({ theme }) => theme.container.mainContainer};
+  width: 100vw;
+  height: 100vh;
+  background: #fefbe9;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
