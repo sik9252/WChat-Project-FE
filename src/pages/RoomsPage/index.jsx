@@ -31,9 +31,10 @@ import {
 } from '../../utils/axios/RoomsApi';
 
 /** store */
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { myInfoAtom } from '../../utils/store/MyInfoStore';
 import { isLoginAtom } from '../../utils/store/AuthStore';
+import { enteredRoomNameAtom } from '../../utils/store/RoomStore';
 
 function RoomsPage() {
   const navigate = useNavigate();
@@ -46,6 +47,9 @@ function RoomsPage() {
       navigate('/');
     }
   }, []);
+
+  // 접속한 채팅방의 제목
+  const setEnteredRoomName = useSetRecoilState(enteredRoomNameAtom);
 
   // 내 닉네임 조회
   const myNickName = useRecoilValue(myInfoAtom);
@@ -86,6 +90,7 @@ function RoomsPage() {
 
   /** 채팅방 입장 및 비밀번호 확인 */
   const onClickEnterRoom = (room, roomId) => {
+    // 비밀방인 경우
     if (room.secret) {
       const roomPassword = prompt('비밀번호를 입력해주세요!');
       const roomData = {
@@ -94,18 +99,21 @@ function RoomsPage() {
       };
       checkRoomPasswordRef(roomData).then((res) => {
         if (res.data.success) {
+          setEnteredRoomName({ roomName: room.roomName, roomId: roomId });
           navigate(`/chat/${roomId}`);
         } else {
           alert(res.data.message);
         }
       });
     } else {
+      // 공개방인 경우
       const roomData = {
         roomId: roomId,
       };
       checkRoomPasswordRef(roomData).then((res) => {
         console.log(res);
         if (res.data.success) {
+          setEnteredRoomName({ roomName: room.roomName, roomId: roomId });
           navigate(`/chat/${roomId}`);
         } else {
           alert(res.data.message);
@@ -122,13 +130,11 @@ function RoomsPage() {
 
   const SearchByEnter = (e) => {
     if (e.key === 'Enter') {
-      console.log('enter');
       setIsSearchClicked(true);
     }
   };
 
   const onClickSearch = () => {
-    console.log('click');
     setIsSearchClicked(true);
   };
 
@@ -142,6 +148,7 @@ function RoomsPage() {
         console.log(data.data);
         setRoomsList(data.data);
         setIsSearchClicked(false);
+        setSearchKeyword('');
       },
       onError: (error) => {
         console.log(error);
@@ -164,8 +171,8 @@ function RoomsPage() {
         {/* 채팅방 검색창 */}
         <SearchBox>
           <SearchInputBox
-            width={320}
             height={40}
+            value={searchKeyword}
             placeholder={'찾으시는 방이 있으신가요?'}
             onChange={onChangeSearchKeyword}
             onKeyPress={SearchByEnter}

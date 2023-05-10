@@ -9,7 +9,7 @@ export const RoomsPageContainer = styled.div`
   justify-content: space-between;
 `;
 
-export const RoomPageContents = styled.div``
+export const RoomPageContents = styled.div``;
 
 export const WelcomeTitle = styled.div`
   display: flex;
@@ -34,6 +34,13 @@ export const Room = styled.div`
   justify-content: space-between;
 
   & > div {
+    :nth-child(1) {
+      padding-right: 20px;
+      white-space: nowrap;
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     :nth-child(2) {
       display: flex;
     }
@@ -74,6 +81,7 @@ export const SearchBox = styled.div`
   margin: 20px 0;
 
   & > svg {
+    margin-left: 10px;
     cursor: pointer;
   }
 `;
