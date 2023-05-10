@@ -5,6 +5,7 @@ export const InputBox = ({
   inputName,
   width,
   height,
+  value,
   placeholder,
   onChange,
   defaultValue,
@@ -14,6 +15,7 @@ export const InputBox = ({
       name={inputName}
       width={width}
       height={height}
+      value={value}
       placeholder={placeholder}
       defaultValue={defaultValue}
       onChange={onChange}
@@ -25,6 +27,7 @@ export const SearchInputBox = ({
   inputName,
   width,
   height,
+  value,
   placeholder,
   onChange,
   onKeyPress,
@@ -34,6 +37,7 @@ export const SearchInputBox = ({
       name={inputName}
       width={width}
       height={height}
+      value={value}
       placeholder={placeholder}
       onChange={onChange}
       onKeyPress={onKeyPress}

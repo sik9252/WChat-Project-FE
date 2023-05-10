@@ -4,7 +4,7 @@ import { FONT_STYLES } from '../../styles/common/font-styles';
 
 export const StyledInputBox = styled.input`
   ${FONT_STYLES.P_M}
-  width: ${({ width }) => (width ? `${width}px` : '200px')};
+  width: 100%;
   height: ${({ height }) => (height ? `${height}px` : '58px')};
   border: none;
   padding: 10px;
@@ -21,7 +21,7 @@ export const StyledInputBox = styled.input`
 `;
 
 export const StyledSearchInputBox = styled.input`
-  width: ${({ width }) => (width ? `${width}px` : '200px')};
+  width: 100%;
   height: ${({ height }) => (height ? `${height}px` : '58px')};
   padding: 10px;
   border: none;
