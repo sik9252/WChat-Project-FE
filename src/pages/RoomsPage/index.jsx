@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 /** styles */
 import {
   RoomsPageContainer,
+  RoomPageContents,
   WelcomeTitle,
   RoomsListBox,
   Room,
@@ -54,15 +55,17 @@ function RoomsPage() {
   const [roomsList, setRoomsList] = useState([]);
 
   useEffect(() => {
-    getAllRoomsReq(currentPage)
-      .then((res) => {
-        console.log(res.data);
-        setRoomsList(res.data);
-      })
-      .catch((err) => {
-        alert('채팅방 목록을 불러오는데 실패하였습니다.');
-      });
-  }, [navigate, currentPage]);
+    if (isLogin) {
+      getAllRoomsReq(currentPage)
+        .then((res) => {
+          console.log(res.data);
+          setRoomsList(res.data);
+        })
+        .catch((err) => {
+          alert('채팅방 목록을 불러오는데 실패하였습니다.');
+        });
+    }
+  }, [isLogin, navigate, currentPage]);
 
   /** 새로고침 버튼 클릭 시 데이터 패칭 */
   const onClickRefresh = () => {
@@ -154,78 +157,80 @@ function RoomsPage() {
 
   return (
     <RoomsPageContainer>
-      <WelcomeTitle>
-        <p>{myNickName}</p>님, 환영합니다!
-      </WelcomeTitle>
-      {/* 채팅방 검색창 */}
-      <SearchBox>
-        <SearchInputBox
-          width={320}
-          height={40}
-          placeholder={'찾으시는 방이 있으신가요?'}
-          onChange={onChangeSearchKeyword}
-          onKeyPress={SearchByEnter}
-        />
-        <FontAwesomeIcon
-          icon={faMagnifyingGlass}
-          onClick={() => {
-            onClickSearch();
-          }}
-        />
-      </SearchBox>
-      <RoomListTitleBox>
-        <div>채팅방 목록</div>
-        <div>
-          <Button
-            width={100}
+      <RoomPageContents>
+        <WelcomeTitle>
+          <p>{myNickName}</p>님, 환영합니다!
+        </WelcomeTitle>
+        {/* 채팅방 검색창 */}
+        <SearchBox>
+          <SearchInputBox
+            width={320}
             height={40}
-            onClick={() => {
-              onClickCreateRoom();
-            }}
-          >
-            채팅방 만들기
-          </Button>
-          <FontAwesomeIcon
-            icon={faRotateRight}
-            onClick={() => onClickRefresh()}
+            placeholder={'찾으시는 방이 있으신가요?'}
+            onChange={onChangeSearchKeyword}
+            onKeyPress={SearchByEnter}
           />
-        </div>
-      </RoomListTitleBox>
-      <RoomsListBox>
-        {roomsList.chatRoomResponseDtoList &&
-        roomsList.chatRoomResponseDtoList.length > 0 ? (
-          <>
-            {roomsList.chatRoomResponseDtoList.map((room) => (
-              <Room
-                key={room.roomId}
-                onClick={() => {
-                  onClickEnterRoom(room, room.roomId);
-                }}
-                isSecret={room.secret}
-              >
-                <div>{room.roomName}</div>
-                <div>
-                  {room.secret ? (
-                    <div>
-                      <FontAwesomeIcon icon={faLock} />
-                    </div>
-                  ) : (
-                    <div>
-                      <FontAwesomeIcon icon={faLockOpen} />
-                    </div>
-                  )}
-
+          <FontAwesomeIcon
+            icon={faMagnifyingGlass}
+            onClick={() => {
+              onClickSearch();
+            }}
+          />
+        </SearchBox>
+        <RoomListTitleBox>
+          <div>채팅방 목록</div>
+          <div>
+            <Button
+              width={100}
+              height={40}
+              onClick={() => {
+                onClickCreateRoom();
+              }}
+            >
+              채팅방 만들기
+            </Button>
+            <FontAwesomeIcon
+              icon={faRotateRight}
+              onClick={() => onClickRefresh()}
+            />
+          </div>
+        </RoomListTitleBox>
+        <RoomsListBox>
+          {roomsList.chatRoomResponseDtoList &&
+          roomsList.chatRoomResponseDtoList.length > 0 ? (
+            <>
+              {roomsList.chatRoomResponseDtoList.map((room) => (
+                <Room
+                  key={room.roomId}
+                  onClick={() => {
+                    onClickEnterRoom(room, room.roomId);
+                  }}
+                  isSecret={room.secret}
+                >
+                  <div>{room.roomName}</div>
                   <div>
-                    {room.countPeople}/{room.maxPeople}
+                    {room.secret ? (
+                      <div>
+                        <FontAwesomeIcon icon={faLock} />
+                      </div>
+                    ) : (
+                      <div>
+                        <FontAwesomeIcon icon={faLockOpen} />
+                      </div>
+                    )}
+
+                    <div>
+                      {room.countPeople}/{room.maxPeople}
+                    </div>
                   </div>
-                </div>
-              </Room>
-            ))}
-          </>
-        ) : (
-          <Room>개설된 채팅방이 없습니다.</Room>
-        )}
-      </RoomsListBox>
+                </Room>
+              ))}
+            </>
+          ) : (
+            <Room>개설된 채팅방이 없습니다.</Room>
+          )}
+        </RoomsListBox>
+      </RoomPageContents>
       <Pagination
         totalPageCount={roomsList.chatRoomTotalPages}
         currentPage={currentPage + 1}

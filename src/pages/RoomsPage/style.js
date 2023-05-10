@@ -4,7 +4,12 @@ import { FONT_STYLES } from '../../styles/common/font-styles';
 
 export const RoomsPageContainer = styled.div`
   ${({ theme }) => theme.container.mainContainer};
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
+
+export const RoomPageContents = styled.div``
 
 export const WelcomeTitle = styled.div`
   display: flex;
