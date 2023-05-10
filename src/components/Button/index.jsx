@@ -8,6 +8,7 @@ export const Button = ({
   height,
   onClick,
   bgColor,
+  color,
   fontSize,
 }) => {
   return (
@@ -17,6 +18,7 @@ export const Button = ({
       height={height}
       onClick={onClick}
       bgColor={bgColor}
+      color={color}
       fontSize={fontSize}
     >
       {children}

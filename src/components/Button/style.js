@@ -8,7 +8,7 @@ export const StyledButton = styled.button`
   height: ${({ height }) => `${height}px`};
   font-size: ${({ fontSize }) => (fontSize ? `${fontSize}px` : `${15}px`)};
   background-color: ${({ bgColor }) => (bgColor ? bgColor : COLOR.GREEN_9)};
-  color: ${({ bgColor }) => (bgColor ? COLOR.BLACK_1 : COLOR.GRAY_0)};
+  color: ${({ color }) => (color ? color : COLOR.GRAY_0)};
   border-radius: 7px;
 
   :hover {
