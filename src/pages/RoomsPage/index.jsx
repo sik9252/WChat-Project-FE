@@ -10,6 +10,7 @@ import {
   Room,
   SearchBox,
   RoomListTitleBox,
+  PaginationContainer,
 } from './style';
 
 /** components*/
@@ -20,7 +21,6 @@ import { faRotateRight } from '@fortawesome/free-solid-svg-icons';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '../../components/Button';
-import Pagination from '../../components/Pagination';
 
 /** axios */
 import { useQuery } from 'react-query';
@@ -70,6 +70,19 @@ function RoomsPage() {
         });
     }
   }, [isLogin, navigate, currentPage]);
+
+  // 페이징 이전, 다음 버튼
+  const onClickPrevBtn = () => {
+    if (currentPage !== 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const onClickNextBtn = () => {
+    if (currentPage !== roomsList.chatRoomTotalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
   /** 새로고침 버튼 클릭 시 데이터 패칭 */
   const onClickRefresh = () => {
@@ -238,11 +251,38 @@ function RoomsPage() {
           )}
         </RoomsListBox>
       </RoomPageContents>
-      <Pagination
+      {/* <Pagination
         totalPageCount={roomsList.chatRoomTotalPages}
         currentPage={currentPage + 1}
         setCurrentPage={setCurrentPage}
-      />
+      /> */}
+      <PaginationContainer>
+        {roomsList.chatRoomTotalPages === 0 ? (
+          <>
+            <Button></Button>
+            <div>{currentPage}</div>
+            <Button></Button>
+          </>
+        ) : (
+          <>
+            {currentPage === 0 ? (
+              <Button width={60}></Button>
+            ) : (
+              <Button width={60} height={40} onClick={() => onClickPrevBtn()}>
+                이전
+              </Button>
+            )}
+            <div>{currentPage + 1}</div>
+            {roomsList.chatRoomTotalPages - 1 === currentPage ? (
+              <Button width={60}></Button>
+            ) : (
+              <Button width={60} height={40} onClick={() => onClickNextBtn()}>
+                다음
+              </Button>
+            )}
+          </>
+        )}
+      </PaginationContainer>
     </RoomsPageContainer>
   );
 }

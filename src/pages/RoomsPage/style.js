@@ -111,3 +111,12 @@ export const RoomListTitleBox = styled.div`
     }
   }
 `;
+
+export const PaginationContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 50px;
+  color: ${COLOR.GREEN_11};
+`;
