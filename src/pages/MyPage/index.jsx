@@ -2,19 +2,30 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 /** style */
-import { MyPageContainer } from './style';
+import COLOR from '../../styles/common/colors';
+import {
+  MyPageContainer,
+  MyPageTitle,
+  ChangeNickBox,
+  MyPageOptionBox,
+} from './style';
+
+/** components */
+import { InputBox } from '../../components/InputBox';
+import { Button } from '../../components/Button';
 
 /** axios */
 import { changeMyNickReq } from '../../utils/axios/MyInfoApi';
+import { withDrawlReq } from '../../utils/axios/AuthApi';
 
 /** store */
-import { useRecoilValue, useRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { myInfoAtom } from '../../utils/store/MyInfoStore';
 import { isLoginAtom } from '../../utils/store/AuthStore';
 
 function MyPage() {
   const navigate = useNavigate();
-  const isLogin = useRecoilValue(isLoginAtom);
+  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
 
   useEffect(() => {
     if (!isLogin) {
@@ -55,23 +66,65 @@ function MyPage() {
   };
 
   /** 회원 탈퇴 기능 */
+  const onClickWithdrawal = () => {
+    let withdrawal = window.confirm('정말 탈퇴하시겠습니까?');
+
+    if (withdrawal) {
+      withDrawlReq().then((res) => {
+        if (res.data.success) {
+          alert('회원 탈퇴가 완료되었습니다.');
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
+          setIsLogin(false);
+          navigate('/');
+        } else {
+          alert('회원 탈퇴에 실패하였습니다.');
+        }
+      });
+    }
+  };
 
   return (
     <MyPageContainer>
-      <div>내 닉네임: {currentNick}</div>
-      <div>
-        <input
-          placeholder="변경할 닉네임을 입력하세요."
-          onChange={onChangeNick}
-        ></input>
-        <button
+      <MyPageTitle>
+        <p>{currentNick}</p>님의 마이페이지
+      </MyPageTitle>
+      <ChangeNickBox>
+        <div>닉네임 변경하기</div>
+        <div>
+          <InputBox
+            height={40}
+            placeholder="변경할 닉네임을 입력하세요."
+            onChange={onChangeNick}
+          ></InputBox>
+          <Button
+            width={80}
+            height={40}
+            onClick={() => {
+              onClickChangeNick();
+            }}
+          >
+            변경하기
+          </Button>
+        </div>
+        <div>* 닉네임 변경은 3분마다 가능합니다.</div>
+      </ChangeNickBox>
+      <MyPageOptionBox>
+        <Button
+          width={80}
+          height={40}
+          bgColor={COLOR.GREEN_7}
+          color={COLOR.GRAY_0}
           onClick={() => {
-            onClickChangeNick();
+            onClickWithdrawal();
           }}
         >
-          닉네임 변경하기
-        </button>
-      </div>
+          회원 탈퇴
+        </Button>
+        <Button width={80} height={40} bgColor={COLOR.GREEN_9}>
+          문의하기
+        </Button>
+      </MyPageOptionBox>
     </MyPageContainer>
   );
 }
