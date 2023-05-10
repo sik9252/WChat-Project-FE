@@ -17,14 +17,15 @@ import { logoutReq } from '../../utils/axios/AuthApi';
 
 /** store */
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { myInfoAtom } from '../../utils/store/MyInfoStore';
+import { enteredRoomNameAtom } from '../../utils/store/RoomStore';
 import { isLoginAtom } from '../../utils/store/AuthStore';
 
 function Header() {
   const navigate = useNavigate();
   // 로그인 전역 상태
   const setIsLogin = useSetRecoilState(isLoginAtom);
-  const myNickName = useRecoilValue(myInfoAtom);
+  // 입장한 채팅방의 제목
+  const enteredRoomName = useRecoilValue(enteredRoomNameAtom);
   const location = useLocation();
 
   // 로그아웃
@@ -55,7 +56,24 @@ function Header() {
   return (
     <HeaderContainer>
       <LogoBox>
+        {console.log(location.pathname)}
         <img src={WchatLogo} alt="WChat" onClick={() => onClickLogo()} />
+        {location.pathname === `/chat/${enteredRoomName.roomId}` ? (
+          <>
+            <div>{enteredRoomName.roomName}</div>
+            <Button
+              width={60}
+              height={40}
+              onClick={() => {
+                navigate('/rooms');
+              }}
+            >
+              나가기
+            </Button>
+          </>
+        ) : (
+          ''
+        )}
       </LogoBox>
       <InfoBox>
         {location.pathname === '/rooms' ? (

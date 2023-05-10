@@ -14,9 +14,26 @@ export const HeaderContainer = styled.div`
 `;
 
 export const LogoBox = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
   & > img {
     width: 100px;
     cursor: pointer;
+  }
+
+  & > div {
+    width: 200px;
+    color: ${COLOR.BLACK_2};
+    padding: 0 30px 0 10px;
+    font-weight: 600;
+    font-size: 15px;
+    white-space: nowrap;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `;
 
