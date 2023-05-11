@@ -16,14 +16,14 @@ import { Button } from '../Button';
 import { logoutReq } from '../../utils/axios/AuthApi';
 
 /** store */
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import { enteredRoomNameAtom } from '../../utils/store/RoomStore';
 import { isLoginAtom } from '../../utils/store/AuthStore';
 
 function Header() {
   const navigate = useNavigate();
   // 로그인 전역 상태
-  const setIsLogin = useSetRecoilState(isLoginAtom);
+  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
   // 입장한 채팅방의 제목
   const enteredRoomName = useRecoilValue(enteredRoomNameAtom);
   const location = useLocation();
@@ -54,69 +54,75 @@ function Header() {
   };
 
   return (
-    <HeaderContainer>
-      <LogoBox>
-        <img src={WchatLogo} alt="WChat" onClick={() => onClickLogo()} />
-        {location.pathname === `/chat/${enteredRoomName.roomId}` ? (
-          <>
-            <div>{enteredRoomName.roomName}</div>
-            <Button
-              width={60}
-              height={40}
-              onClick={() => {
-                navigate('/rooms');
-              }}
-            >
-              나가기
-            </Button>
-          </>
-        ) : (
-          ''
-        )}
-      </LogoBox>
-      <InfoBox>
-        {location.pathname === '/rooms' ? (
-          <>
-            <div>
-              <Button
-                width={50}
-                height={40}
-                onClick={() => {
-                  onClickMyPage();
-                }}
-              >
-                MY
-              </Button>
-            </div>
-            <div>
-              <Button
-                width={80}
-                height={40}
-                onClick={() => {
-                  onClickLogout();
-                }}
-              >
-                로그아웃
-              </Button>
-            </div>
-          </>
-        ) : location.pathname === '/mypage' ? (
-          <div>
-            <Button
-              width={80}
-              height={40}
-              onClick={() => {
-                onClickLogout();
-              }}
-            >
-              로그아웃
-            </Button>
-          </div>
-        ) : (
-          ''
-        )}
-      </InfoBox>
-    </HeaderContainer>
+    <>
+      {isLogin ? (
+        <HeaderContainer>
+          <LogoBox>
+            <img src={WchatLogo} alt="WChat" onClick={() => onClickLogo()} />
+            {location.pathname === `/chat/${enteredRoomName.roomId}` ? (
+              <>
+                <div>{enteredRoomName.roomName}</div>
+                <Button
+                  width={60}
+                  height={40}
+                  onClick={() => {
+                    navigate('/rooms');
+                  }}
+                >
+                  나가기
+                </Button>
+              </>
+            ) : (
+              ''
+            )}
+          </LogoBox>
+          <InfoBox>
+            {location.pathname === '/rooms' ? (
+              <>
+                <div>
+                  <Button
+                    width={50}
+                    height={40}
+                    onClick={() => {
+                      onClickMyPage();
+                    }}
+                  >
+                    MY
+                  </Button>
+                </div>
+                <div>
+                  <Button
+                    width={80}
+                    height={40}
+                    onClick={() => {
+                      onClickLogout();
+                    }}
+                  >
+                    로그아웃
+                  </Button>
+                </div>
+              </>
+            ) : location.pathname === '/mypage' ? (
+              <div>
+                <Button
+                  width={80}
+                  height={40}
+                  onClick={() => {
+                    onClickLogout();
+                  }}
+                >
+                  로그아웃
+                </Button>
+              </div>
+            ) : (
+              ''
+            )}
+          </InfoBox>
+        </HeaderContainer>
+      ) : (
+        ''
+      )}
+    </>
   );
 }
 
