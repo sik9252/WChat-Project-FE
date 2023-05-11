@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import Loading from '../Loading';
+
 /** axios */
 import { kakaoLoginReq } from '../../utils/axios/AuthApi';
 import { getMyInfoReq } from '../../utils/axios/MyInfoApi';
@@ -47,6 +49,8 @@ function KakaoLogin() {
         navigate('/');
       });
   }, [authCode]);
+
+  return <Loading loadingContent={'로그인 중'}/>;
 }
 
 export default KakaoLogin;
