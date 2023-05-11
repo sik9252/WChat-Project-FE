@@ -25,3 +25,7 @@ export const checkRoomPasswordRef = async (data) => {
   return await useAxios.post(`/chat/room/enter`, data);
 };
 
+/** 채팅방 안에 접속해있는 유저 정보 */
+export const getUserListInRoomReq = async (roomId) => {
+  return await useAxios.get(`/chat/room/users/${roomId}`);
+};
