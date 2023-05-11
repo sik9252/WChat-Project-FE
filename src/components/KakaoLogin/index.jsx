@@ -39,18 +39,18 @@ function KakaoLogin() {
               setMyInfo(res.data.nickName);
               navigate('/rooms');
             })
-            .catch((err) => {
-              alert('유저 정보를 가져오는데 실패하였습니다.');
+            .catch((error) => {
+              alert(error.response.data.message);
             });
         }
       })
-      .catch((err) => {
-        alert('로그인에 실패하였습니다! 다시 시도해주세요.');
+      .catch((error) => {
+        alert(error.response.data.message);
         navigate('/');
       });
   }, [authCode]);
 
-  return <Loading loadingContent={'로그인 중'}/>;
+  return <Loading loadingContent={'로그인 중'} />;
 }
 
 export default KakaoLogin;

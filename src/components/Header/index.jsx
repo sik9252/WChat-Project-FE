@@ -38,8 +38,8 @@ function Header() {
         setIsLogin(false);
         navigate('/');
       })
-      .catch((err) => {
-        alert('로그아웃에 실패했습니다.');
+      .catch((error) => {
+        alert(error.response.data.message);
       });
   };
 

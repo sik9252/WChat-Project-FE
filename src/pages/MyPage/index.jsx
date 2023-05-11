@@ -60,8 +60,8 @@ function MyPage() {
           navigate('/rooms');
         }
       })
-      .catch((err) => {
-        alert(err.response.data.message);
+      .catch((error) => {
+        alert(error.response.data.message);
       });
   };
 

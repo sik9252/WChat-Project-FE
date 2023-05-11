@@ -64,8 +64,8 @@ function RoomsPage() {
         .then((res) => {
           setRoomsList(res.data);
         })
-        .catch((err) => {
-          alert('채팅방 목록을 불러오는데 실패하였습니다.');
+        .catch((error) => {
+          alert(error.response.data.message);
         });
     }
   }, [isLogin, navigate, currentPage]);
@@ -89,8 +89,8 @@ function RoomsPage() {
       .then((res) => {
         setRoomsList(res.data);
       })
-      .catch((err) => {
-        alert('채팅방 목록을 불러오는데 실패하였습니다.');
+      .catch((error) => {
+        alert(error.response.data.message);
       });
   };
 
@@ -108,27 +108,34 @@ function RoomsPage() {
         roomId: roomId,
         roomPassword: roomPassword,
       };
-      checkRoomPasswordRef(roomData).then((res) => {
-        if (res.data.success) {
-          setEnteredRoomName({ roomName: room.roomName, roomId: roomId });
-          navigate(`/chat/${roomId}`);
-        } else {
-          alert(res.data.message);
-        }
-      });
+      checkRoomPasswordRef(roomData)
+        .then((res) => {
+          if (res.data.success) {
+            setEnteredRoomName({ roomName: room.roomName, roomId: roomId });
+            navigate(`/chat/${roomId}`);
+          } else {
+            alert(res.data.message);
+          }
+        })
+        .catch((error) => {
+          alert(error.response.data.message);
+        });
     } else {
       // 공개방인 경우
       const roomData = {
         roomId: roomId,
       };
-      checkRoomPasswordRef(roomData).then((res) => {
-        if (res.data.success) {
-          setEnteredRoomName({ roomName: room.roomName, roomId: roomId });
-          navigate(`/chat/${roomId}`);
-        } else {
-          alert(res.data.message);
-        }
-      });
+      checkRoomPasswordRef(roomData)
+        .then((res) => {
+          console.log(res);
+          if (res.data.success) {
+            setEnteredRoomName({ roomName: room.roomName, roomId: roomId });
+            navigate(`/chat/${roomId}`);
+          }
+        })
+        .catch((error) => {
+          alert(error.response.data.message);
+        });
     }
   };
 
