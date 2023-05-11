@@ -121,9 +121,9 @@ function MyPage() {
         >
           회원 탈퇴
         </Button>
-        <Button width={80} height={40} bgColor={COLOR.GREEN_9}>
+        <a href="mailto:easyst0228@gmail.com?subject=메일의 제목을 입력해주세요.&body=내용을 입력해주세요.">
           문의하기
-        </Button>
+        </a>
       </MyPageOptionBox>
     </MyPageContainer>
   );
