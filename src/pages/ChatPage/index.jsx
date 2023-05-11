@@ -61,9 +61,9 @@ function ChatPage() {
         Authorization: `${localStorage.getItem('accessToken')}`,
       },
       debug: function (str) {
-        console.log('str:', str);
+        //console.log(str);
       },
-      //reconnectDelay: 5000,
+      reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
       // connection이 established되면 호출되는 함수 onConnect()
@@ -105,14 +105,12 @@ function ChatPage() {
     client.current.subscribe(
       `/topic/chat/room/${roomId.roomId}`,
       ({ body }) => {
-        console.log('subscribe', body);
         setChatMessages((_chatMessages) => [
           ..._chatMessages,
           JSON.parse(body),
         ]);
       },
       headers,
-      // { id: 'myTopicId' },
     );
 
     if (client.current.connected) {
@@ -149,12 +147,6 @@ function ChatPage() {
   };
 
   // 채팅 스크롤 하단 유지
-  // const ChatList = useRef();
-  // console.log(ChatList);
-
-  // useEffect(() => {
-  //   ChatList.current.scrollTop = ChatList.current.scrollHeight;
-  // }, []);
   const ChatList = useRef();
 
   const scrollToBottom = () => {

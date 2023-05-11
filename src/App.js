@@ -9,11 +9,11 @@ import Router from './router';
 function App() {
   useAxiosInterceptor();
 
-  // 모바일 뷰에서 100vh 제대로 적용되도록 하는 함수
   function setScreenSize() {
     let vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
   }
+  
   useEffect(() => {
     setScreenSize();
   });

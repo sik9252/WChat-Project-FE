@@ -56,7 +56,6 @@ function Header() {
   return (
     <HeaderContainer>
       <LogoBox>
-        {console.log(location.pathname)}
         <img src={WchatLogo} alt="WChat" onClick={() => onClickLogo()} />
         {location.pathname === `/chat/${enteredRoomName.roomId}` ? (
           <>

@@ -73,8 +73,9 @@ export const Chat = styled.div`
   padding: 10px;
   border-radius: 7px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-  background-color: ${COLOR.GREEN_3};
+  background-color: ${COLOR.GREEN_4};
   word-break: break-word;
+  line-height: 1.3;
 
   & > div {
     padding: 3px 0;
@@ -83,10 +84,13 @@ export const Chat = styled.div`
 `;
 
 export const ChatNotice = styled.div`
+  font-weight: 600;
   font-size: 13px;
   color: ${COLOR.GREEN_9};
   text-align: center;
   margin: 20px 0;
+  padding: 10px 0;
+  box-shadow: rgba(64, 81, 59, 0.1) 0px 2px 5px;
 `;
 
 export const InputSection = styled.div`
