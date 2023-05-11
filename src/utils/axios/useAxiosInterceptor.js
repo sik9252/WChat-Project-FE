@@ -59,7 +59,15 @@ export const useAxiosInterceptor = () => {
 
   const responseInterceptor = useAxios.interceptors.response.use(
     function (response) {
-      return response;
+      // error 구문으로 안잡히는거 같아서 일단 여기에 로직 작성
+      if (response.data.success) {
+        return response;
+      } else {
+        window.location.href = '/';
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        setIsLogin(false);
+      }
     },
     function (error) {
       if (error.status === 401) {
