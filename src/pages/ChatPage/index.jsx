@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import * as StompJs from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 import moment from 'moment-timezone';
@@ -14,10 +14,18 @@ import {
   ChatNotice,
   InputSection,
 } from './style';
+import COLOR from '../../styles/common/colors';
 
 /** components */
 import { Button } from '../../components/Button';
 import { InputBox } from '../../components/InputBox';
+import Modal from '../../components/Modal';
+
+/** pages */
+import UserListInRoomPage from '../UserListInRoomPage';
+
+/** hooks */
+import useModal from '../../hooks/useModal';
 
 /** store */
 import { useRecoilValue } from 'recoil';
@@ -160,6 +168,17 @@ function ChatPage() {
     return m.format('HH:mm');
   };
 
+  /** 모달에 접속해 있는 유저 정보 보여주기 */
+
+  // 접속해 있는 유저 정보 모달 열고 닫기
+  const [modalOption, showModal] = useModal();
+
+  // 접속해 있는 유저 정보 모달 오픈
+  const openUserListInRooms = useCallback(() => {
+    showModal(true, null, null, <UserListInRoomPage roomId={roomId.roomId} />);
+    document.body.style.overflow = 'hidden';
+  }, [showModal]);
+
   // 엔터로 채팅 보내기
   const SendByEnter = (e) => {
     if (e.key === 'Enter') {
@@ -177,6 +196,16 @@ function ChatPage() {
 
   return (
     <ChatPageContainer>
+      <Modal modalOption={modalOption} />
+      <Button
+        width={100}
+        height={40}
+        bgColor={COLOR.GREEN_7}
+        color={COLOR.GRAY_0}
+        onClick={() => openUserListInRooms()}
+      >
+        참여자 보기
+      </Button>
       <ChatListSection>
         {chatMessages && chatMessages.length > 0 && (
           <ChatListBox ref={ChatList}>
