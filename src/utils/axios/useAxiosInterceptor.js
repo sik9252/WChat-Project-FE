@@ -20,8 +20,10 @@ export const useAxiosInterceptor = () => {
       try {
         const nowDate = new Date().getTime() / 1000;
         const accessTokenDecode = jwt_decode(accessToken);
+        console.log('exp:', accessTokenDecode.exp, 'nowDate:', nowDate);
 
         if (accessTokenDecode.exp < nowDate) {
+          console.log('리프레쉬 할 시간입니다.');
           const refreshRequest = await axios.post(
             `${process.env.REACT_APP_SERVER_IP}/auth/refresh`,
             {
@@ -60,7 +62,7 @@ export const useAxiosInterceptor = () => {
   const responseInterceptor = useAxios.interceptors.response.use(
     function (response) {
       // error 구문으로 안잡히는거 같아서 일단 여기에 로직 작성
-      if (response.data.success) {
+      if (response) {
         return response;
       } else {
         window.location.href = '/';
@@ -68,6 +70,7 @@ export const useAxiosInterceptor = () => {
         localStorage.removeItem('refreshToken');
         setIsLogin(false);
       }
+      //return response;
     },
     function (error) {
       if (error.status === 401) {
