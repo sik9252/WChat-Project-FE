@@ -25,6 +25,13 @@ const COLOR = {
   RED_0: '#FEC5C4',
   RED_1: '#AB6277',
 
+  // 파란색 계열
+  BLUE_1: '#CAE9FF',
+  BLUE_2: '#BEE9E8',
+  BLUE_3: '#5FA8D3',
+  BLUE_4: '#62B6Cb',
+  BLUE_5: '#1B4965',
+
   // 핵심 색상
   GREEN_0: '#FEFBE9',
   GREEN_1: '#F6FFDE',

@@ -57,19 +57,46 @@ export const useAxiosInterceptor = () => {
     },
   );
 
-  const responseInterceptor = useAxios.interceptors.response.use(
-    function (response) {
+  const responseInterceptor = axios.interceptors.response.use(
+    (response) => {
       return response;
     },
-    function (error) {
-      if (error.status === 401) {
-        window.location.href = '/';
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        setIsLogin(false);
+
+    async (error) => {
+      const {
+        config,
+        response: { status },
+      } = error;
+
+      if (status === 401) {
+        if (error.response.data.message === '잘못된 토큰입니다.') {
+          const originalRequest = config;
+          const refreshToken = localStorage.getItem('refreshToken');
+          // token refresh 요청
+          const { data } = await axios.post(
+            `${process.env.REACT_APP_SERVER_IP}/auth/refresh`, // token refresh api
+            {
+              refreshToken: refreshToken,
+            },
+          );
+          // 새로운 토큰 저장
+          const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
+            data;
+
+          localStorage.setItem('accessToken', newAccessToken);
+
+          axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          // 401로 요청 실패했던 요청 새로운 accessToken으로 재요청
+          return axios(originalRequest);
+        } else {
+          window.location.href = '/';
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
+          setIsLogin(false);
+        }
       }
-      // eslint-disable-next-line no-undef
-      return error.response;
+      return Promise.reject(error);
     },
   );
 

@@ -44,4 +44,16 @@ export const ChangeNickBox = styled.div`
 export const MyPageOptionBox = styled.div`
   display: flex;
   justify-content: space-between;
+
+  & > a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 40px;
+    font-size: 15px;
+    background-color: ${COLOR.GREEN_9};
+    color: ${COLOR.GRAY_0};
+    border-radius: 7px;
+  }
 `;

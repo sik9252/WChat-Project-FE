@@ -116,8 +116,10 @@ function CreateRoomPage() {
           navigate(`/chat/${res.data.roomId}`);
         })
         .catch((error) => {
-          alert('방 생성에 실패하였습니다.');
+          alert(error.response.data.message);
         });
+    } else {
+      alert('입력 값을 확인해주세요.');
     }
   };
 

@@ -9,6 +9,7 @@ export const InputBox = ({
   placeholder,
   onChange,
   defaultValue,
+  onKeyPress,
 }) => {
   return (
     <StyledInputBox
@@ -19,6 +20,7 @@ export const InputBox = ({
       placeholder={placeholder}
       defaultValue={defaultValue}
       onChange={onChange}
+      onKeyPress={onKeyPress}
     />
   );
 };
