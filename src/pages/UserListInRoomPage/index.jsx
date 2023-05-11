@@ -7,7 +7,6 @@ import { UserListContainer, UserListBox, User } from './style';
 import { getUserListInRoomReq } from '../../utils/axios/RoomsApi';
 
 function UserListInRoomPage({ roomId }) {
-  console.log(roomId);
   // 접속해 있는 유저 정보 리스트
   const [userListInRoom, setUserListInRoom] = useState([]);
 
@@ -17,12 +16,13 @@ function UserListInRoomPage({ roomId }) {
       setUserListInRoom(res.data.nickNameResponseDtoList);
     });
   }, []);
+
   return (
     <UserListContainer>
-      <div>유저 목록</div>
+      <div>현재 접속중인 유저</div>
       <UserListBox>
         {userListInRoom &&
-          userListInRoom.map((user) => <User>{user.nickName}</User>)}
+          userListInRoom.map((user, i) => <User key={i}>{user.nickName}</User>)}
       </UserListBox>
     </UserListContainer>
   );

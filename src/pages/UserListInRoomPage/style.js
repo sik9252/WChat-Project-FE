@@ -8,11 +8,22 @@ export const UserListContainer = styled.div`
 
   & > div {
     :nth-child(1) {
+      margin-bottom: 10px;
       text-align: center;
+      font-weight: 600;
+      color: ${COLOR.GREEN_11};
     }
   }
 `;
 
-export const UserListBox = styled.div``;
+export const UserListBox = styled.div`
+  text-align: center;
+`;
 
-export const User = styled.div``;
+export const User = styled.div`
+  width: 100%;
+  padding: 5px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: ${COLOR.GREEN_9};
+`;
