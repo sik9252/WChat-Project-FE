@@ -102,3 +102,49 @@ export const InputSection = styled.div`
     margin-left: 5px;
   }
 `;
+
+export const NoticeBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 300;
+  color: ${COLOR.GREEN_10};
+
+  & > div {
+    :nth-child(1) {
+      width: 30.3%;
+    }
+    :nth-child(2) {
+      width: 30.3%;
+      text-align: center;
+      line-height: 1.3;
+
+      & > div {
+        padding: 5px 0;
+      }
+    }
+    :nth-child(3) {
+      width: 30.3%;
+    }
+  }
+
+  @media (max-width: 720px) {
+    display: block;
+
+    & > div {
+      :nth-child(1) {
+        width: 100%;
+      }
+      :nth-child(2) {
+        width: 100%;
+        margin-top: 10px;
+        text-align: center;
+        line-height: 1.3;
+
+        & > div {
+          padding: 5px 0;
+        }
+      }
+    }
+  }
+`;

@@ -13,6 +13,7 @@ import {
   Chat,
   ChatNotice,
   InputSection,
+  NoticeBox,
 } from './style';
 import COLOR from '../../styles/common/colors';
 
@@ -26,6 +27,7 @@ import UserListInRoomPage from '../UserListInRoomPage';
 
 /** hooks */
 import useModal from '../../hooks/useModal';
+import useHistory from '../../hooks/useHistory';
 
 /** store */
 import { useRecoilValue } from 'recoil';
@@ -35,6 +37,7 @@ import { myInfoAtom } from '../../utils/store/MyInfoStore';
 function ChatPage() {
   const isLogin = useRecoilValue(isLoginAtom);
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!isLogin) {
       alert('로그인을 해주세요!');
@@ -154,7 +157,34 @@ function ChatPage() {
     setInputMessage('');
   };
 
-  // 채팅 스크롤 하단 유지
+  /** 뒤로가기 하는 경우 */
+  useEffect(() => {
+    const historyEvent = useHistory.listen(({ action }) => {
+      if (action === 'POP') {
+        navigate('/rooms');
+      }
+    });
+
+    return historyEvent;
+  }, []);
+
+  /** 새로고침 하는 경우 */
+  const preventClose = (e) => {
+    e.preventDefault();
+    e.returnValue = ''; // chrome에서는 설정이 필요해서 넣은 코드
+  };
+
+  useEffect(() => {
+    (() => {
+      window.addEventListener('beforeunload', preventClose);
+    })();
+
+    return () => {
+      window.removeEventListener('beforeunload', preventClose);
+    };
+  }, []);
+
+  /** 채팅 스크롤 하단에 유지하기 */
   const ChatList = useRef();
 
   const scrollToBottom = () => {
@@ -162,14 +192,31 @@ function ChatPage() {
     ChatList.current.scrollTop = scrollHeight;
   };
 
-  // 채팅 보낸 시간 출력해주는 함수
+  /** 엔터키로 채팅 전송하기 */
+  const SendByEnter = (e) => {
+    if (e.key === 'Enter') {
+      publish(inputMessage);
+      setTimeout(() => {
+        scrollToBottom();
+      }, 50);
+    }
+  };
+
+  /** 보내기 버튼으로 채팅 보내기 */
+  const clickSend = () => {
+    publish(inputMessage);
+    setTimeout(() => {
+      scrollToBottom();
+    }, 50);
+  };
+
+  /** 채팅 보낸 시간 특정 포맷으로 출력해주는 함수 */
   const getCurrentTime = (time) => {
     var m = moment(time).tz('Asia/Seoul');
     return m.format('HH:mm');
   };
 
   /** 모달에 접속해 있는 유저 정보 보여주기 */
-
   // 접속해 있는 유저 정보 모달 열고 닫기
   const [modalOption, showModal] = useModal();
 
@@ -179,33 +226,32 @@ function ChatPage() {
     document.body.style.overflow = 'hidden';
   }, [showModal]);
 
-  // 엔터로 채팅 보내기
-  const SendByEnter = (e) => {
-    if (e.key === 'Enter') {
-      publish(inputMessage);
-    }
-  };
-
-  // 보내기 버튼으로 채팅 보내기
-  const clickSend = () => {
-    publish(inputMessage);
-    setTimeout(() => {
-      scrollToBottom();
-    }, 50);
-  };
-
   return (
     <ChatPageContainer>
       <Modal modalOption={modalOption} />
-      <Button
-        width={100}
-        height={40}
-        bgColor={COLOR.GREEN_7}
-        color={COLOR.GRAY_0}
-        onClick={() => openUserListInRooms()}
-      >
-        참여자 보기
-      </Button>
+      <NoticeBox>
+        <div>
+          <Button
+            width={100}
+            height={40}
+            bgColor={COLOR.GREEN_7}
+            color={COLOR.GRAY_0}
+            onClick={() => openUserListInRooms()}
+          >
+            참여자 보기
+          </Button>
+        </div>
+        <div>
+          <div>
+            새로고침을 시도하는 경우 방에 재입장 하게 되어 기존의 채팅 기록이
+            모두 사라집니다.
+          </div>
+          <div>
+            마지막 남은 1명까지 방을 나가게 되면 방이 자동으로 삭제됩니다.
+          </div>
+        </div>
+        <div></div>
+      </NoticeBox>
       <ChatListSection>
         {chatMessages && chatMessages.length > 0 && (
           <ChatListBox ref={ChatList}>
@@ -244,7 +290,7 @@ function ChatPage() {
           placeholder={'내용을 입력하세요.'}
           value={inputMessage}
           onChange={onChangeInputMessage}
-          onKeyPress={() => SendByEnter()}
+          onKeyPress={SendByEnter}
         />
         <Button width={80} height={40} onClick={() => clickSend()}>
           보내기
