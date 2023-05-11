@@ -62,7 +62,6 @@ function RoomsPage() {
     if (isLogin) {
       getAllRoomsReq(currentPage)
         .then((res) => {
-          console.log(res.data);
           setRoomsList(res.data);
         })
         .catch((err) => {
@@ -88,7 +87,6 @@ function RoomsPage() {
   const onClickRefresh = () => {
     getAllRoomsReq(currentPage)
       .then((res) => {
-        console.log(res.data);
         setRoomsList(res.data);
       })
       .catch((err) => {
@@ -124,7 +122,6 @@ function RoomsPage() {
         roomId: roomId,
       };
       checkRoomPasswordRef(roomData).then((res) => {
-        console.log(res);
         if (res.data.success) {
           setEnteredRoomName({ roomName: room.roomName, roomId: roomId });
           navigate(`/chat/${roomId}`);
@@ -158,13 +155,12 @@ function RoomsPage() {
       retry: 0,
       enabled: false,
       onSuccess: (data) => {
-        console.log(data.data);
         setRoomsList(data.data);
         setIsSearchClicked(false);
         setSearchKeyword('');
       },
       onError: (error) => {
-        console.log(error);
+        alert('방 검색에 실패하였습니다.');
       },
     },
   );

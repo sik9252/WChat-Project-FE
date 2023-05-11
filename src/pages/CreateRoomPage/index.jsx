@@ -117,7 +117,6 @@ function CreateRoomPage() {
         })
         .catch((error) => {
           alert('방 생성에 실패하였습니다.');
-          console.log(error);
         });
     }
   };
