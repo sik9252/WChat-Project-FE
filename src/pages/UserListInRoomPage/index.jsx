@@ -12,7 +12,6 @@ function UserListInRoomPage({ roomId }) {
 
   useEffect(() => {
     getUserListInRoomReq(roomId).then((res) => {
-      console.log(res.data);
       setUserListInRoom(res.data.nickNameResponseDtoList);
     });
   }, []);

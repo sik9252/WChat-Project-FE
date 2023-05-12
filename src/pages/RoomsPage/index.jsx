@@ -254,11 +254,6 @@ function RoomsPage() {
           )}
         </RoomsListBox>
       </RoomPageContents>
-      {/* <Pagination
-        totalPageCount={roomsList.chatRoomTotalPages}
-        currentPage={currentPage + 1}
-        setCurrentPage={setCurrentPage}
-      /> */}
       <PaginationContainer>
         {roomsList.chatRoomTotalPages === 0 ? (
           <>
