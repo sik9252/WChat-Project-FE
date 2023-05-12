@@ -45,7 +45,7 @@ function KakaoLogin() {
         }
       })
       .catch((error) => {
-        alert(error.response.data.message);
+        alert('로그인에 실패하였습니다.');
         navigate('/');
       });
   }, [authCode]);

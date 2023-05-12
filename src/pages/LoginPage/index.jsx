@@ -31,15 +31,8 @@ function LoginPage() {
     window.location.href = KAKAO_AUTH_URL;
   };
 
-  const test = () => {
-    axios.get('https://list-api.link/hello').then((res) => {
-      console.log(res);
-    });
-  };
-
   return (
     <LoginPageContainer>
-      <button onClick={() => test()}>테스트</button>
       <LogoBox>
         <img src={WchatLogo} alt="로고" />
       </LogoBox>
