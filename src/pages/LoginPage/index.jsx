@@ -32,7 +32,7 @@ function LoginPage() {
   };
 
   const test = () => {
-    axios.get('https://lb.list-api.link/hello').then((res) => {
+    axios.get('https://list-api.link/hello').then((res) => {
       console.log(res);
     });
   };
