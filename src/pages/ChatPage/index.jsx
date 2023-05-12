@@ -82,7 +82,7 @@ function ChatPage() {
         subscribe();
       },
       onStompError: (frame) => {
-        console.error(frame);
+        // console.error(frame);
         alert('채팅방 입장에 실패하였습니다.');
         navigate('/rooms');
       },

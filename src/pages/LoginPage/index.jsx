@@ -12,8 +12,6 @@ import { useRecoilValue } from 'recoil';
 import { isLoginAtom } from '../../utils/store/AuthStore';
 import { useNavigate } from 'react-router-dom';
 
-import axios from 'axios';
-
 function LoginPage() {
   const navigate = useNavigate();
   const isLogin = useRecoilValue(isLoginAtom);
