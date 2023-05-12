@@ -12,6 +12,8 @@ import { useRecoilValue } from 'recoil';
 import { isLoginAtom } from '../../utils/store/AuthStore';
 import { useNavigate } from 'react-router-dom';
 
+import axios from 'axios';
+
 function LoginPage() {
   const navigate = useNavigate();
   const isLogin = useRecoilValue(isLoginAtom);
@@ -29,8 +31,15 @@ function LoginPage() {
     window.location.href = KAKAO_AUTH_URL;
   };
 
+  const test = () => {
+    axios.get('https://lb.list-api.link/hello').then((res) => {
+      console.log(res);
+    });
+  };
+
   return (
     <LoginPageContainer>
+      <button onClick={() => test()}>테스트</button>
       <LogoBox>
         <img src={WchatLogo} alt="로고" />
       </LogoBox>
