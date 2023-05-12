@@ -9,14 +9,14 @@ import Router from './router';
 function App() {
   useAxiosInterceptor();
 
-  function setScreenSize() {
-    let vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
-  }
-  
-  useEffect(() => {
-    setScreenSize();
-  });
+  // function setScreenSize() {
+  //   let vh = window.innerHeight * 0.01;
+  //   document.documentElement.style.setProperty('--vh', `${vh}px`);
+  // }
+
+  // useEffect(() => {
+  //   setScreenSize();
+  // });
 
   return (
     <ThemeProvider theme={theme['main']}>
