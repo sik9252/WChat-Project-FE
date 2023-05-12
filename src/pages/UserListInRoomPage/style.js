@@ -18,6 +18,8 @@ export const UserListContainer = styled.div`
 
 export const UserListBox = styled.div`
   text-align: center;
+  max-height: 300px;
+  overflow-y: scroll;
 `;
 
 export const User = styled.div`

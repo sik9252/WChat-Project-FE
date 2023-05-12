@@ -117,6 +117,6 @@ export const PaginationContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 20px;
   color: ${COLOR.GREEN_11};
 `;
