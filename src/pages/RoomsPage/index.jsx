@@ -36,6 +36,9 @@ import { myInfoAtom } from '../../utils/store/MyInfoStore';
 import { isLoginAtom } from '../../utils/store/AuthStore';
 import { enteredRoomNameAtom } from '../../utils/store/RoomStore';
 
+/** utils */
+import checkInputValidate from '../../utils/checkInputValidate';
+
 function RoomsPage() {
   const navigate = useNavigate();
 
@@ -127,7 +130,6 @@ function RoomsPage() {
       };
       checkRoomPasswordRef(roomData)
         .then((res) => {
-          console.log(res);
           if (res.data.success) {
             setEnteredRoomName({ roomName: room.roomName, roomId: roomId });
             navigate(`/chat/${roomId}`);
@@ -147,12 +149,20 @@ function RoomsPage() {
 
   const SearchByEnter = (e) => {
     if (e.key === 'Enter') {
-      setIsSearchClicked(true);
+      if (checkInputValidate(searchKeyword)) {
+        setIsSearchClicked(true);
+      } else {
+        alert('사용할 수 없는 문자가 포함되어있습니다.');
+      }
     }
   };
 
   const onClickSearch = () => {
-    setIsSearchClicked(true);
+    if (checkInputValidate(searchKeyword)) {
+      setIsSearchClicked(true);
+    } else {
+      alert('사용할 수 없는 문자가 포함되어있습니다.');
+    }
   };
 
   const { refetch: getSearchedRoomsReqRefetch } = useQuery(

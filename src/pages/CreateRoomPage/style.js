@@ -61,6 +61,7 @@ export const ErrorBox = styled.div`
   display: block;
   font-size: 13px;
   color: ${COLOR.RED_1};
+  padding-bottom: 3px;
 
   ${({ checkRoomName }) =>
     checkRoomName
