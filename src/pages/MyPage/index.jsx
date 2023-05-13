@@ -23,6 +23,9 @@ import { useRecoilState } from 'recoil';
 import { myInfoAtom } from '../../utils/store/MyInfoStore';
 import { isLoginAtom } from '../../utils/store/AuthStore';
 
+/** utils */
+import checkInputValidate from '../../utils/checkInputValidate';
+
 function MyPage() {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
@@ -45,24 +48,28 @@ function MyPage() {
   };
 
   const onClickChangeNick = () => {
-    const nickData = {
-      nickName: nickName,
-    };
+    if (checkInputValidate(nickName)) {
+      const nickData = {
+        nickName: nickName,
+      };
 
-    changeMyNickReq(nickData)
-      .then((res) => {
-        if (res.data.success) {
-          alert('닉네임 변경이 완료되었습니다.');
-          setCurrentNickName(nickName);
-          navigate('/rooms');
-        } else {
-          alert('3분 후에 다시 변경하실 수 있습니다.');
-          navigate('/rooms');
-        }
-      })
-      .catch((error) => {
-        alert(error.response.data.message);
-      });
+      changeMyNickReq(nickData)
+        .then((res) => {
+          if (res.data.success) {
+            alert('닉네임 변경이 완료되었습니다.');
+            setCurrentNickName(nickName);
+            navigate('/rooms');
+          } else {
+            alert('3분 후에 다시 변경하실 수 있습니다.');
+            navigate('/rooms');
+          }
+        })
+        .catch((error) => {
+          alert(error.response.data.message);
+        });
+    } else {
+      alert('사용할 수 없는 문자가 포함되어있습니다.');
+    }
   };
 
   /** 회원 탈퇴 기능 */

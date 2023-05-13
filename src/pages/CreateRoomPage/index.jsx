@@ -24,6 +24,9 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { enteredRoomNameAtom } from '../../utils/store/RoomStore';
 import { isLoginAtom } from '../../utils/store/AuthStore';
 
+/** utils */
+import checkInputValidate from '../../utils/checkInputValidate';
+
 function CreateRoomPage() {
   const navigate = useNavigate();
   // 접속한 채팅방의 제목
@@ -67,7 +70,12 @@ function CreateRoomPage() {
   const [checkRoomPassword, setCheckRoomPassword] = useState(false);
 
   useEffect(() => {
-    if (roomName !== '' && roomName.length >= 1 && roomName.length <= 20) {
+    if (
+      roomName !== '' &&
+      roomName.length >= 1 &&
+      roomName.length <= 20 &&
+      checkInputValidate(roomName)
+    ) {
       setCheckRoomName(true);
     } else {
       setCheckRoomName(false);
@@ -88,7 +96,7 @@ function CreateRoomPage() {
 
   useEffect(() => {
     if (isSecret === true) {
-      if (roomPassword !== '') {
+      if (roomPassword !== '' && checkInputValidate(roomPassword)) {
         setCheckRoomPassword(true);
       } else {
         setCheckRoomPassword(false);
@@ -136,6 +144,9 @@ function CreateRoomPage() {
         </RoomNameBox>
         <ErrorBox checkRoomName={checkRoomName}>
           * 채팅방 이름은 1~20자여야 합니다.
+        </ErrorBox>
+        <ErrorBox checkRoomName={checkRoomName}>
+          * 특수문자는 사용하실 수 없습니다.
         </ErrorBox>
         <div>
           <MaxPeopleBox>
@@ -186,6 +197,9 @@ function CreateRoomPage() {
             </RoomPassWordBox>
             <ErrorBox checkRoomPassword={checkRoomPassword}>
               * 비밀방 설정시 비밀번호는 필수값 입니다.
+            </ErrorBox>
+            <ErrorBox checkRoomPassword={checkRoomPassword}>
+              * 특수문자는 사용하실 수 없습니다.
             </ErrorBox>
           </>
         ) : (
