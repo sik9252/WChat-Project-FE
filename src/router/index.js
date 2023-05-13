@@ -8,7 +8,7 @@ import RoomsPage from '../pages/RoomsPage';
 import CreateRoomPage from '../pages/CreateRoomPage';
 import ChatPage from '../pages/ChatPage';
 import MyPage from '../pages/MyPage';
-import KakaoLogin from '../components//KakaoLogin';
+import KakaoLogin from '../components/KakaoLogin';
 import PageNotFound from '../pages/PageNotFound';
 
 const Router = () => {
