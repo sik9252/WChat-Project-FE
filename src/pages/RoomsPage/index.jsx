@@ -68,7 +68,7 @@ function RoomsPage() {
           setRoomsList(res.data);
         })
         .catch((error) => {
-          alert(error.response.data.message);
+          //alert(error.response.data.message);
         });
     }
   }, [isLogin, navigate, currentPage]);

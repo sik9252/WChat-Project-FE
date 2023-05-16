@@ -6,8 +6,8 @@ const mainTheme = {
   container: {
     mainContainer: css`
       width: 100vw;
-      // height: calc(var(--vh, 1vh) * 100 - 60px);
-      height: 100vh;
+      height: calc(var(--vh, 1vh) * 100 - 60px);
+      //height: 100vh;
       background: #fefbe9;
       padding: 20px;
 
